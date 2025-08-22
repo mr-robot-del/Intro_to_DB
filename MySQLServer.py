@@ -18,14 +18,14 @@ try:
         user=username,
         password=password
     )
+    conn.get_warnings = True
     cursor = conn.cursor()
-    cursor.execute("CREATE DATABASE alx_book_store")
-    print("Database 'alx_book_store' created successfully!")
+    cursor.execute("CREATE DATABASE IF NOT EXISTS alx_book_store")
+    warnings = cursor.fetchwarnings()
+    if warnings is None or len(warnings) == 0:
+        print("Database 'alx_book_store' created successfully!")
 except Error as e:
-    if e.errno == 1007:
-        pass  # Database already exists, do not fail
-    else:
-        print(f"Error: {e}")
+    print(f"Error: {e}")
 finally:
     if cursor is not None:
         cursor.close()
